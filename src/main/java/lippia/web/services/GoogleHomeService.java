@@ -2,7 +2,6 @@ package lippia.web.services;
 
 import com.crowdar.core.PropertyManager;
 import com.crowdar.core.actions.ActionManager;
-import com.crowdar.driver.DriverManager;
 import lippia.web.constants.GoogleConstants;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -12,12 +11,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.testng.Assert;
 
 import java.io.UnsupportedEncodingException;
-import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
 
 import static com.crowdar.core.actions.WebActionManager.navigateTo;
@@ -51,11 +46,13 @@ public class GoogleHomeService extends ActionManager {
             WebElement element = driver.findElement(locator);
             if (element.isDisplayed()) {
                 System.out.println("Locator encontrado en la página.");
+                String respuesta = "no hay stock";
+                notifyWebhook(respuesta);
             } else {
                 System.out.println("Locator no encontrado en la página. Notificando al webhook...");
-
+                String respuesta = "si hay stock";
                 // Envia una solicitud HTTP al webhook
-                notifyWebhook();
+                notifyWebhook(respuesta);
 
                 break;
             }
@@ -69,10 +66,10 @@ public class GoogleHomeService extends ActionManager {
         }
     }
 
-    private static void notifyWebhook() throws UnsupportedEncodingException {
+    private static void notifyWebhook(String respuesta) throws UnsupportedEncodingException {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost("https://chat.googleapis.com/v1/spaces/AAAARcBFhCU/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=faVnGPwDhEYWZUURf6zgdxbTio2RKxbbaoCM-1YT3uk");
-        httpPost.setEntity(new StringEntity("hola nico"));
+        httpPost.setEntity(new StringEntity(respuesta));
         // Puedes configurar el cuerpo de la solicitud y encabezados según tu webhook
         // Ejemplo: httpPost.setHeader("Authorization", "Bearer tu_token");
         //         httpPost.setEntity(new StringEntity("Mensaje de notificación"));

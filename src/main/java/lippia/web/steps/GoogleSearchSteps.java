@@ -28,4 +28,16 @@ public class GoogleSearchSteps extends PageSteps {
     public void statVerification() {
         GoogleSearchResultService.verifyResults();
     }
+
+    @Given("ingreso a la web de samsung")
+    public void ingresoALaWebDeSamsung() {
+        GoogleHomeService.navegarWeb();
+    }
+
+    @When("verifico que tengan stock")
+    public void verificoQueTenganStock() {
+
+    }
+
+
 }

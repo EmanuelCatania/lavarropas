@@ -5,6 +5,8 @@ import io.cucumber.java.en.*;
 import lippia.web.services.GoogleHomeService;
 import lippia.web.services.GoogleSearchResultService;
 
+import java.io.UnsupportedEncodingException;
+
 public class GoogleSearchSteps extends PageSteps {
 
     @Given("^The client is on google page$")
@@ -35,9 +37,8 @@ public class GoogleSearchSteps extends PageSteps {
     }
 
     @When("verifico que tengan stock")
-    public void verificoQueTenganStock() {
-
+    public void verificoQueTenganStock() throws UnsupportedEncodingException {
+        GoogleHomeService.validar();
     }
-
 
 }
